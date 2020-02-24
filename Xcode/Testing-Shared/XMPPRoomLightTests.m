@@ -8,8 +8,6 @@
 
 #import <XCTest/XCTest.h>
 #import "XMPPMockStream.h"
-#import "XMPPRoomLight.h"
-#import "XMPPJID.h"
 
 @interface XMPPRoomLight()
 - (nonnull NSString *)memberListVersion;
@@ -296,9 +294,9 @@
 	}];
 }
 
-- (void)xmppRoomLight:(XMPPRoomLight *)sender didFetchMembersList:(NSArray *)items {
-	NSXMLElement *user1 = [items firstObject];
-	NSXMLElement *user3 = [items lastObject];
+- (void)xmppRoomLight:(XMPPRoomLight *)sender didFetchMembersList:(XMPPIQ *)iqResult {
+	NSXMLElement *user1 = [[sender knownMembersList] firstObject];
+	NSXMLElement *user3 = [[sender knownMembersList] lastObject];
 	XCTAssertEqualObjects([user1 attributeForName:@"affiliation"].stringValue, @"owner");
 	XCTAssertEqualObjects(user1.stringValue, @"user1@shakespeare.lit");
 	XCTAssertEqualObjects([user3 attributeForName:@"affiliation"].stringValue, @"member");
